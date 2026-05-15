@@ -1,5 +1,12 @@
 /dts-v1/;
 
-/ {
-	
+/ { 
+	cpu@2000_0000 {
+        clocks {
+            speed = 100 MHz;
+            reg = <BADD_FNAF 1234>;
+        }
+        compatible = "STM32,cortex-m4";
+        reg = <0xDEAD_BEEF 0x1234>;
+    }
 }

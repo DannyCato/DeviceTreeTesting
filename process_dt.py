@@ -2,23 +2,15 @@ from dataclasses import dataclass
 from pathlib import Path
 import re
 from helpers import surround_quotes
-from tree import *
+from generate_tree import lexer
 
 SUPPORTED_VERSIONS = [1]
-
-@dataclass
-class ProcessDT:
-    name: str
-
-def lexer(lines: list[str]) -> Node:
-    
-
 
 def process_dt(path: Path):
     with open(path, 'r') as file:
         dt_file = file.readlines()
     
-    raw_version_number = dt_file[0]
+    raw_version_number = dt_file.pop(0)
     mat = re.search("dts\\-v\\d*", raw_version_number)
     if not mat:
         raise Exception(f"Does not contain proper devicetree header at first line: Must fit the pattern {surround_quotes('/dts-v[0-9]*/;')}")
@@ -27,7 +19,6 @@ def process_dt(path: Path):
     print(f"Found device tree specification header, {matched_string}")
 
     version = re.search("\\d+", matched_string)
-    print(version)
     if not version:
         raise Exception(f"No version number found in devicetree header")
     else:
@@ -38,6 +29,7 @@ def process_dt(path: Path):
     else:
         print(f"Found version: {version}")
     
+    print("Beginning Lexer")    
     lexer(dt_file)
 
 
